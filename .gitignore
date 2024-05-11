@@ -1,0 +1,21 @@
+# Ignore all hidden directories and files
+.*
+
+# Specifically ignore the build directories
+cmake-build-debug/
+.idea/
+
+# Ignore object files and executables
+*.o
+*.exe
+*.out
+
+# Ignore compiled static and dynamic libraries
+*.a
+*.so
+
+# Ignore backup files
+*~
+
+# Ignore other common directories that are not needed for builds, and are specific to your environment
+.vscode/
