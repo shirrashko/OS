@@ -9,8 +9,16 @@
 
 
 #define GALOIS_POLYNOMIAL ((1ULL << 63) | (1ULL << 62) | (1ULL << 60) | (1ULL << 59))
+
 #define INITIAL_SIZE 100
-#define MIN_ALLOWED_MAX_SIZE 100
+#define MIN_MAX_SIZE 100 // Minimum valid value for max_size
+#define MIN_FACTOR 1.0  // Minimum value for growth factor (need to be > 1)
+#define MIN_REPEAT 1     // Minimum valid value for repeat times
+
+#define ARG_MAX_SIZE 1
+#define ARG_FACTOR 2
+#define ARG_REPEAT 3
+
 
 /**
  * Converts the struct timespec to time in nano-seconds.
@@ -149,23 +157,23 @@ int main(int argc, char* argv[])
 
     // Your code here
     if (argc < 4) {
-        std::cout << "Usage: " << argv[0] << " max_size factor repeat\n";
-        std::cout << "  max_size: Maximum size of the memory array in bytes (integer >= 100)\n";
-        std::cout << "  factor: Growth factor for memory sizes, must be > 1 (decimal)\n";
-        std::cout << "  repeat: Number of times to repeat each measurement (positive integer)\n";
+        std::cerr << "Usage: " << argv[0] << " max_size factor repeat\n"
+                  << "  max_size: Maximum size of the memory array in bytes (integer >= " << MIN_MAX_SIZE << ")\n"
+                  << "  factor: Growth factor for memory sizes, must be > " << MIN_FACTOR << " (decimal)\n"
+                  << "  repeat: Number of times to repeat each measurement (integer >= " << MIN_REPEAT << ")\n";
         return EXIT_FAILURE;
     }
 
 
     try {
-        const int max_size = std::stoi(argv[1]);
-        const double factor = std::stod(argv[2]);
-        const int repeat = std::stoi(argv[3]);
+        const int max_size = std::stoi(argv[ARG_MAX_SIZE]);
+        const double factor = std::stod(argv[ARG_FACTOR]);
+        const int repeat = std::stoi(argv[ARG_REPEAT]);
 
-        if (max_size < MIN_ALLOWED_MAX_SIZE || factor <= 1 || repeat <= 0) {
-            std::cout << "Error: Invalid input arguments.\n";
-            std::cout << "Provided max_size = " << max_size << ", factor = " << factor << ", repeat = " << repeat << ".\n";
-            std::cout << "Conditions: max_size >= 100, factor > 1, repeat > 0.\n";
+        if (max_size < MIN_MAX_SIZE || factor <= MIN_FACTOR || repeat < MIN_REPEAT) {
+            std::cerr << "Error: Invalid input arguments." << std::endl;
+            std::cerr << "Provided max_size = " << max_size << ", factor = " << factor << ", repeat = " << repeat << std::endl;
+            std::cerr << "Conditions: max_size >= 100, factor > 1, repeat > 0." << std::endl;
             return EXIT_FAILURE;
         }
 
@@ -174,9 +182,9 @@ int main(int argc, char* argv[])
             return EXIT_FAILURE;
         }
     } catch (const std::invalid_argument& e) {
-        std::cout << "Invalid argument: " << e.what() << std::endl;
+        std::cerr << "Invalid argument: " << e.what() << std::endl;
     } catch (const std::out_of_range& e) {
-        std::cout << "Out of range: " << e.what() << std::endl;
+        std::cerr << "Out of range: " << e.what() << std::endl;
     }
 
     return EXIT_SUCCESS;
