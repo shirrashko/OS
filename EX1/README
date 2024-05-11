@@ -1,0 +1,59 @@
+shirashko, login2
+209144013
+EX: 1
+
+FILES:
+`memory_latency.cpp` -- Main program source file that measures memory read latency.
+
+REMARKS:
+These are some remarks that
+I want the graders to know
+about this submission.
+
+ANSWERS:
+
+Q1:
+Here are answers to theoreical questions
+if there were such questions in the exercise.
+
+Q2:
+Here are answers to theoreical questions
+if there were such questions in the exercise.
+
+ANSWERS:
+
+# Assignment 1
+Explanation of the results
+
+Finally, the README file should contain an explanation of the results you obtained. What can we see in the
+graph? Did you get the results you expected? Why? In your answer explain the difference between latency for random
+and sequential array access patterns. Also address the difference between the latency for the different cache levels.
+
+# Assignment 2
+Explanation of the results
+
+
+Q1: Measurement Variability
+**Question:** How consistent are the measurements across multiple runs?
+**Answer:** The measurements tend to be consistent when the system is idle. Small discrepancies observed can be
+attributed to minor background processes. Measurements become inconsistent with significant CPU load from other
+applications.
+
+### Q2: Effect of Repetition on Measurements
+**Question:** Does increasing the number of repetitions affect the average time of accessing the array?
+
+**Answer:** Beyond a certain threshold, increasing the number of repetitions does not significantly affect the average
+time, indicating that the measurement has reached a level of stability. The results plateau, suggesting that initial
+cache effects are averaged out.
+
+## Graphs and Screenshots
+- `results_graph.png` - Graph depicting the memory access times as array size increases.
+- `lscpu_output.png` - Screenshot showing the output of the `lscpu` command for system specification.
+- `page_size_output.png` - Screenshot showing the output of the `getconf PAGE_SIZE` command, provided for the bonus part.
+
+How to Build and Run
+1. Ensure all source files and the Makefile are in the same directory.
+2. In a terminal, navigate to the directory and run the command `make`.
+3. Execute the program using `./memory_latency max_size factor repeat`.
+   - Example: `./memory_latency 800 1.5 200`
+4. To clean up object files and executable, run `make clean`.
