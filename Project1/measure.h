@@ -1,4 +1,4 @@
-// OS 24 EX1
+// OS 24 Project1
 
 #ifndef MEASURE_H
 #define MEASURE_H

@@ -99,8 +99,8 @@ events:
     checks:
       - "Detecting C compiler ABI info"
     directories:
-      source: "/Users/srashkovits/CLionProjects/EX1/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-MrjhQB"
-      binary: "/Users/srashkovits/CLionProjects/EX1/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-MrjhQB"
+      source: "/Users/srashkovits/CLionProjects/Project1/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-MrjhQB"
+      binary: "/Users/srashkovits/CLionProjects/Project1/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-MrjhQB"
     cmakeVariables:
       CMAKE_C_FLAGS: ""
       CMAKE_C_FLAGS_DEBUG: "-g"
@@ -241,8 +241,8 @@ events:
     checks:
       - "Detecting CXX compiler ABI info"
     directories:
-      source: "/Users/srashkovits/CLionProjects/EX1/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-eFrllV"
-      binary: "/Users/srashkovits/CLionProjects/EX1/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-eFrllV"
+      source: "/Users/srashkovits/CLionProjects/Project1/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-eFrllV"
+      binary: "/Users/srashkovits/CLionProjects/Project1/cmake-build-debug/CMakeFiles/CMakeScratch/TryCompile-eFrllV"
     cmakeVariables:
       CMAKE_CXX_FLAGS: ""
       CMAKE_CXX_FLAGS_DEBUG: "-g"

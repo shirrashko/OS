@@ -1,4 +1,4 @@
-// OS 24 EX1
+// OS 24 Project1
 
 #include "memory_latency.h"
 #include "measure.h"

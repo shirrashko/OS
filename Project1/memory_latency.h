@@ -1,4 +1,4 @@
-// OS 24 EX1
+// OS 24 Project1
 
 #ifndef _MEMORY_LATENCY_H
 #define _MEMORY_LATENCY_H
