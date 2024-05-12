@@ -166,7 +166,7 @@ int main(int argc, char* argv[])
     }
 
     try {
-        const int max_size = std::stoi(argv[ARG_MAX_SIZE]);
+        const long max_size = std::stol(argv[ARG_MAX_SIZE]);
         const float factor = std::stof(argv[ARG_FACTOR]);
         const int repeat = std::stoi(argv[ARG_REPEAT]);
 
