@@ -4,6 +4,10 @@ EX: 1
 
 FILES:
 `memory_latency.cpp` -- Main program source file that measures memory read latency.
+'README' -- This file containing the assignment description and instructions.
+'Makefile' -- Makefile for compiling the program.
+'results.png' -- Graphical representation of the results obtained from the memory latency measurements.
+'lscpu.png' -- Screenshot of the `lscpu` command output showing CPU details.
 
 REMARKS:
 These are some remarks that
@@ -29,41 +33,16 @@ ANSWERS:
 - On failing to receive exactly one argument, `WhatIDo` outputs an error message to `stderr` indicating that a single argument is expected.
 - After displaying the error, the program exits with a status code of `0`, indicating a normal termination without executing its main functionality due to the incorrect number of input arguments.
 - The error output is done by duplicating the file descriptor for `stderr` and writing the error message to it. At the end of the program, the file descriptor is closed to release resources.
-
 This assignment highlights the use of `strace` to understand not only the program's dependency on system libraries and memory management but also its basic runtime behavior in handling user inputs and errors.
 
-
-
-
-Finally, the README file should contain an explanation of the results you obtained. What can we see in the
-graph? Did you get the results you expected? Why? In your answer explain the difference between latency for random
-and sequential array access patterns. Also address the difference between the latency for the different cache levels.
-
-# Assignment 2
-Explanation of the results
-
-
-Q1: Measurement Variability
-**Question:** How consistent are the measurements across multiple runs?
-**Answer:** The measurements tend to be consistent when the system is idle. Small discrepancies observed can be
-attributed to minor background processes. Measurements become inconsistent with significant CPU load from other
-applications.
-
-### Q2: Effect of Repetition on Measurements
-**Question:** Does increasing the number of repetitions affect the average time of accessing the array?
-
-**Answer:** Beyond a certain threshold, increasing the number of repetitions does not significantly affect the average
-time, indicating that the measurement has reached a level of stability. The results plateau, suggesting that initial
-cache effects are averaged out.
-
-## Graphs and Screenshots
-- `results_graph.png` - Graph depicting the memory access times as array size increases.
-- `lscpu_output.png` - Screenshot showing the output of the `lscpu` command for system specification.
-- `page_size_output.png` - Screenshot showing the output of the `getconf PAGE_SIZE` command, provided for the bonus part.
-
-How to Build and Run
-1. Ensure all source files and the Makefile are in the same directory.
-2. In a terminal, navigate to the directory and run the command `make`.
-3. Execute the program using `./memory_latency max_size factor repeat`.
-   - Example: `./memory_latency 800 1.5 200`
-4. To clean up object files and executable, run `make clean`.
+# Assignment 2: Explanation of the Results
+This part of the assignment was aimed at measuring memory access latencies across different levels of cache (L1, L2, L3) and RAM, to understand how data size influences access times relative to cache size. We used a structured approach by varying the size of data arrays and recording the latency for both random and sequential access patterns.
+The measurements were conducted on an Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz on the CSE computers (within a Debian 11 virtual machine). The program was designed to systematically increase array size from a few bytes to many bytes, thereby crossing the thresholds of L1, L2, and L3 caches.
+Results Observed:
+- Cache Efficiency: As expected, data that fit within the L1 and L2 caches were accessed much faster than data that required retrieval from the L3 cache or system RAM. This demonstrates the effectiveness of CPU cache layers in reducing data access latency.
+- Impact of Cache Boundaries: Significant increases in latency were observed as data sizes exceeded the cache sizes, with the most dramatic spikes occurring at the transition from L3 cache to RAM.
+- Access Patterns: The random access pattern generally resulted in higher latency than sequential access across all data sizes. This is due to the inefficiency of random accesses in utilizing the prefetching capabilities of modern CPUs, which are optimized for predictable sequential data streams.
+Discussion:
+- Random vs. Sequential Access: The results clearly illustrated that sequential access benefits immensely from prefetching techniques, reducing latency significantly compared to random access. This underscores the importance of data-oriented design in software development, where structuring data to leverage cache prefetching can lead to substantial performance gains.
+- Latency Across Cache Levels: The experiment confirmed theoretical expectations about cache memory performance. Latency remained low and relatively stable as long as data accesses were confined to L1 and L2 caches but increased notably beyond the L3 cache capacity.
+- Practical Implications: For applications involving large datasets, understanding and optimizing for cache usage can lead to significant reductions in data access times.
