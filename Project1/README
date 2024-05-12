@@ -11,16 +11,6 @@ FILES:
 
 ANSWERS:
 
-Q1:
-Here are answers to theoreical questions
-if there were such questions in the exercise.
-
-Q2:
-Here are answers to theoreical questions
-if there were such questions in the exercise.
-
-ANSWERS:
-
 # Assignment 1: Understanding `WhatIDo` - System Call Tracing with `strace`
 `WhatIDo` is a simple executable program that requires exactly one command-line argument to function correctly. Based on the system trace:
 - The program checks for necessary libraries and configurations at startup.
@@ -30,7 +20,7 @@ ANSWERS:
 - The error output is done by duplicating the file descriptor for `stderr` and writing the error message to it. At the end of the program, the file descriptor is closed to release resources.
 This assignment highlights the use of `strace` to understand not only the program's dependency on system libraries and memory management but also its basic runtime behavior in handling user inputs and errors.
 
-# Assignment 2: Explanation of the Results
+# Assignment 2: Measuring Memory Access Latency Across Cache Levels and RAM - Explanation of the Results
 This part of the assignment was aimed at measuring memory access latencies across different levels of cache (L1, L2, L3) and RAM, to understand how data size influences access times relative to cache size. We used a structured approach by varying the size of data arrays and recording the latency for both random and sequential access patterns.
 The measurements were conducted on an Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz on the CSE computers (within a Debian 11 virtual machine). The program was designed to systematically increase array size from a few bytes to many bytes, thereby crossing the thresholds of L1, L2, and L3 caches.
 Results Observed:
