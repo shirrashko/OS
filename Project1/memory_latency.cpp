@@ -38,10 +38,6 @@ uint64_t nanosectime(struct timespec t)
     return t.tv_sec * 1000000000ull + t.tv_nsec;
 }
 
-void showError(const std::string& message) {
-    std::cerr << "Error: " << message << std::endl;
-}
-
 /**
 * Measures the average latency of accessing a given array in a sequential order.
 * @param repeat - the number of times to repeat the measurement for and average on.
@@ -114,7 +110,7 @@ bool perform_measurements(uint64_t max_size, float factor, uint64_t repeat, uint
     while (current_size <= max_size) {
         array_element_t* arr = (array_element_t*)malloc(current_size);
         if (arr == nullptr) {
-            showError("Memory allocation failed for size " + std::to_string(current_size) + " bytes.");
+            std::cerr << "Memory allocation failed for size " << current_size << " bytes." << std::endl;
             return false;
         }
 
@@ -161,11 +157,12 @@ int main(int argc, char* argv[])
 
 
     // Your code here
-    if (argc < 4) {
-        showError("Usage: " + std::string(argv[ARG_PROGRAM_NAME]) + " max_size factor repeat\n"
-                         "  max_size: Maximum size of the memory array in bytes (integer >= " + std::to_string(MIN_MAX_SIZE) + ")\n"
-                        "  factor: Growth factor for memory sizes, must be > " + std::to_string(MIN_FACTOR) + "\n"
-                      "  repeat: Number of times to repeat each measurement (integer >= " + std::to_string(MIN_REPEAT) + ")");
+    if (argc < NUMBER_OF_ARGS) {
+        std::cerr << "Usage: " << argv[ARG_PROGRAM_NAME] << " max_size factor repeat\n"
+                  << "  max_size: Maximum size of the memory array in bytes (integer >= " << MIN_MAX_SIZE << ")" <<
+                  std::endl << "  factor: Growth factor for memory sizes, must be > " << MIN_FACTOR << " (decimal)"
+                  << std::endl << "  repeat: Number of times to repeat each measurement (integer >= " <<
+                  MIN_REPEAT << ")" << std::endl;
         return EXIT_FAILURE;
     }
 
@@ -175,21 +172,21 @@ int main(int argc, char* argv[])
         const int repeat = std::stoi(argv[ARG_REPEAT]);
 
         if (max_size < MIN_MAX_SIZE || factor <= MIN_FACTOR || repeat < MIN_REPEAT) {
-            showError("Invalid input arguments. Provided max_size = " + std::to_string(max_size)
-                      + ", factor = " + std::to_string(factor) + ", repeat = " + std::to_string(repeat)
-                      + ". Conditions: max_size >= 100, factor > 1, repeat >= 1.");
+            std::cerr << "Error: Invalid input arguments." << std::endl << "Provided max_size = " << max_size
+                      << ", factor = " << factor << ", repeat = " << repeat << std::endl << "Conditions: max_size >= 100, factor "
+                                                                                            "> 1, repeat > 0." << std::endl;
             return EXIT_FAILURE;
         }
 
         if (!perform_measurements(max_size, factor, repeat, zero)) {
-            showError("Failed to perform measurements due to memory allocation failure.");
+            std::cerr << "Failed to perform measurements dur to memory allocation failure." << std::endl;
             return EXIT_FAILURE;
         }
     } catch (const std::invalid_argument& e) {
-        showError("Invalid argument: " + std::string(e.what()));
+        std::cerr << "Invalid argument: " << e.what() << std::endl;
         return EXIT_FAILURE;
     } catch (const std::out_of_range& e) {
-        showError("Out of range: " + std::string(e.what()));
+        std::cerr << "Out of range: " << e.what() << std::endl;
         return EXIT_FAILURE;
     }
 
