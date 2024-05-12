@@ -22,8 +22,18 @@ if there were such questions in the exercise.
 
 ANSWERS:
 
-# Assignment 1
-Explanation of the results
+# Assignment 1: Understanding `WhatIDo` - System Call Tracing with `strace`
+`WhatIDo` is a simple executable program that requires exactly one command-line argument to function correctly. Based on the system trace:
+- The program checks for necessary libraries and configurations at startup.
+- It requires the C standard library (`libc.so.6`) which is dynamically linked.
+- On failing to receive exactly one argument, `WhatIDo` outputs an error message to `stderr` indicating that a single argument is expected.
+- After displaying the error, the program exits with a status code of `0`, indicating a normal termination without executing its main functionality due to the incorrect number of input arguments.
+- The error output is done by duplicating the file descriptor for `stderr` and writing the error message to it. At the end of the program, the file descriptor is closed to release resources.
+
+This assignment highlights the use of `strace` to understand not only the program's dependency on system libraries and memory management but also its basic runtime behavior in handling user inputs and errors.
+
+
+
 
 Finally, the README file should contain an explanation of the results you obtained. What can we see in the
 graph? Did you get the results you expected? Why? In your answer explain the difference between latency for random
