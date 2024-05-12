@@ -23,18 +23,15 @@
 
 
 /**
- * Converts the struct timespec to time in nano-seconds.
+ * Converts the struct timespec to time in nano-seconds. Convert the seconds to nanoseconds and add the nanoseconds part.
+ * A nanosecond is a unit of time in the International System of Units (SI), and it represents one billionth of a
+ * second. In the world of technology, computing, and communications, you'll find nanoseconds are commonly used to
+ * measure things like processing speeds and data transfer rates.
  * @param time - the struct timespec to convert.
  * @return - the value of time in nano-seconds.
  */
 uint64_t nanosectime(struct timespec t)
 {
-    // A nanosecond is a unit of time in the International System of Units (SI), and it represents one billionth of a
-    // second. In the world of technology, computing, and communications, you'll find nanoseconds are commonly used to
-    // measure things like processing speeds and data transfer rates.
-
-    // Your code here
-    // Convert the seconds to nanoseconds and add the nanoseconds part
     return t.tv_sec * 1000000000ull + t.tv_nsec;
 }
 
@@ -51,7 +48,6 @@ uint64_t nanosectime(struct timespec t)
 */
 struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* arr, uint64_t arr_size, uint64_t zero)
 {
-    // Your code here
     // Ensure the repeat count is at least as large as the array size to avoid index out of bounds.
     repeat = arr_size > repeat ? arr_size:repeat; // Make sure repeat >= arr_size
 
@@ -122,13 +118,8 @@ bool perform_measurements(uint64_t max_size, float factor, uint64_t repeat, uint
         double offset_sequential = sequential_measure.access_time - sequential_measure.baseline;
 
         std::cout << current_size << "," << offset_random << "," << offset_sequential << std::endl;
-
         free(arr);
-
         current_size = (uint64_t)(ceil(current_size * factor));
-        if (current_size > max_size && (current_size / factor) < max_size) {
-            current_size = max_size; // Ensure we measure at max_size if the factor skips over it
-        }
     }
     return true;
 }
