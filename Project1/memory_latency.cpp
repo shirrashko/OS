@@ -15,6 +15,7 @@
 #define MIN_FACTOR 1.0  // Minimum value for growth factor (need to be > 1)
 #define MIN_REPEAT 1     // Minimum valid value for repeat times
 
+#define NUMBER_OF_ARGS 4
 #define ARG_MAX_SIZE 1
 #define ARG_FACTOR 2
 #define ARG_REPEAT 3
@@ -103,7 +104,7 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
  * @param zero
  * @return true if the measurements were successful, false otherwise.
  */
-bool perform_measurements(uint64_t max_size, double factor, uint64_t repeat, uint64_t zero) {
+bool perform_measurements(uint64_t max_size, float factor, uint64_t repeat, uint64_t zero) {
     uint64_t current_size = INITIAL_SIZE;
     while (current_size <= max_size) {
         array_element_t* arr = (array_element_t*)malloc(current_size);
@@ -155,23 +156,24 @@ int main(int argc, char* argv[])
 
 
     // Your code here
-    if (argc < 4) {
+    if (argc < NUMBER_OF_ARGS) {
         std::cerr << "Usage: " << argv[0] << " max_size factor repeat\n"
-                  << "  max_size: Maximum size of the memory array in bytes (integer >= " << MIN_MAX_SIZE << ")\n"
-                  << "  factor: Growth factor for memory sizes, must be > " << MIN_FACTOR << " (decimal)\n"
-                  << "  repeat: Number of times to repeat each measurement (integer >= " << MIN_REPEAT << ")\n";
+                  << "  max_size: Maximum size of the memory array in bytes (integer >= " << MIN_MAX_SIZE << ")" <<
+                  std::endl << "  factor: Growth factor for memory sizes, must be > " << MIN_FACTOR << " (decimal)"
+                  << std::endl << "  repeat: Number of times to repeat each measurement (integer >= " <<
+                  MIN_REPEAT << ")" << std::endl;
         return EXIT_FAILURE;
     }
 
     try {
         const int max_size = std::stoi(argv[ARG_MAX_SIZE]);
-        const double factor = std::stod(argv[ARG_FACTOR]);
+        const float factor = std::stof(argv[ARG_FACTOR]);
         const int repeat = std::stoi(argv[ARG_REPEAT]);
 
         if (max_size < MIN_MAX_SIZE || factor <= MIN_FACTOR || repeat < MIN_REPEAT) {
-            std::cerr << "Error: Invalid input arguments." << std::endl;
-            std::cerr << "Provided max_size = " << max_size << ", factor = " << factor << ", repeat = " << repeat << std::endl;
-            std::cerr << "Conditions: max_size >= 100, factor > 1, repeat > 0." << std::endl;
+            std::cerr << "Error: Invalid input arguments." << std::endl << "Provided max_size = " << max_size
+            << ", factor = " << factor << ", repeat = " << repeat << std::endl << "Conditions: max_size >= 100, factor "
+                                                                                  "> 1, repeat > 0." << std::endl;
             return EXIT_FAILURE;
         }
 
