@@ -50,7 +50,6 @@ uint64_t nanosectime(struct timespec t)
 struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* arr, uint64_t arr_size, uint64_t zero)
 {
     // Your code here
-
     // Ensure the repeat count is at least as large as the array size to avoid index out of bounds.
     repeat = arr_size > repeat ? arr_size:repeat; // Make sure repeat >= arr_size
 
@@ -62,7 +61,7 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
     // Baseline measurement: perform pseudo-random calculations without accessing the array
     for (register uint64_t i = 0; i < repeat; i++)
     {
-        register uint64_t index = i % arr_size; // Calculate a random index in the array
+        register uint64_t index = i % arr_size;
         rnd ^= index & zero; // XOR operation with zero doesn't change anything. This operation is done with zero,
         // which the compiler is unaware of the fact it is zero, to prevent the compiler from optimizing it out.
         rnd = (rnd >> 1) ^ ((0-(rnd & 1)) & GALOIS_POLYNOMIAL);  // Advance rnd pseudo-randomly (using Galois LFSR)
@@ -163,7 +162,6 @@ int main(int argc, char* argv[])
                   << "  repeat: Number of times to repeat each measurement (integer >= " << MIN_REPEAT << ")\n";
         return EXIT_FAILURE;
     }
-
 
     try {
         const int max_size = std::stoi(argv[ARG_MAX_SIZE]);
