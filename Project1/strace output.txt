@@ -1,0 +1,34 @@
+execve("./WhatIDo", ["./WhatIDo"], 0x7fffe062e6c0 /* 42 vars */) = 0
+brk(NULL)                               = 0x55ef50142000
+access("/etc/ld.so.preload", R_OK)      = -1 ENOENT (No such file or directory)
+openat(AT_FDCWD, "/etc/ld.so.cache", O_RDONLY|O_CLOEXEC) = 3
+fstat(3, {st_mode=S_IFREG|0644, st_size=341846, ...}) = 0
+mmap(NULL, 341846, PROT_READ, MAP_PRIVATE, 3, 0) = 0x7f12c01ab000
+close(3)                                = 0
+openat(AT_FDCWD, "/lib/x86_64-linux-gnu/libc.so.6", O_RDONLY|O_CLOEXEC) = 3
+read(3, "\177ELF\2\1\1\3\0\0\0\0\0\0\0\0\3\0>\0\1\0\0\0@>\2\0\0\0\0\0"..., 832) = 832
+fstat(3, {st_mode=S_IFREG|0755, st_size=1901536, ...}) = 0
+mmap(NULL, 8192, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_ANONYMOUS, -1, 0) = 0x7f12c01a9000
+mmap(NULL, 1914496, PROT_READ, MAP_PRIVATE|MAP_DENYWRITE, 3, 0) = 0x7f12bffd5000
+mmap(0x7f12bfff7000, 1413120, PROT_READ|PROT_EXEC, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x22000) = 0x7f12bfff7000
+mmap(0x7f12c0150000, 323584, PROT_READ, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x17b000) = 0x7f12c0150000
+mmap(0x7f12c019f000, 24576, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_DENYWRITE, 3, 0x1c9000) = 0x7f12c019f000
+mmap(0x7f12c01a5000, 13952, PROT_READ|PROT_WRITE, MAP_PRIVATE|MAP_FIXED|MAP_ANONYMOUS, -1, 0) = 0x7f12c01a5000
+close(3)                                = 0
+arch_prctl(ARCH_SET_FS, 0x7f12c01aa540) = 0
+mprotect(0x7f12c019f000, 16384, PROT_READ) = 0
+mprotect(0x55ef4e8a4000, 4096, PROT_READ) = 0
+mprotect(0x7f12c0229000, 4096, PROT_READ) = 0
+munmap(0x7f12c01ab000, 341846)          = 0
+dup(2)                                  = 3
+fcntl(3, F_GETFL)                       = 0x2 (flags O_RDWR)
+brk(NULL)                               = 0x55ef50142000
+brk(0x55ef50163000)                     = 0x55ef50163000
+fstat(3, {st_mode=S_IFCHR|0620, st_rdev=makedev(0x88, 0x6), ...}) = 0
+write(3, "Error. The program should receiv"..., 62Error. The program should receive a single argument. Exiting.
+) = 62
+write(3, ": Success\n", 10: Success
+)             = 10
+close(3)                                = 0
+exit_group(0)                           = ?
++++ exited with 0 +++
