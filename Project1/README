@@ -9,11 +9,6 @@ FILES:
 'results.png' -- Graphical representation of the results obtained from the memory latency measurements.
 'lscpu.png' -- Screenshot of the `lscpu` command output showing CPU details.
 
-REMARKS:
-These are some remarks that
-I want the graders to know
-about this submission.
-
 ANSWERS:
 
 Q1:
