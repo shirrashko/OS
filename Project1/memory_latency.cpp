@@ -101,7 +101,7 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
  * @param zero
  * @return true if the measurements were successful, false otherwise.
  */
-bool perform_measurements(uint64_t max_size, float factor, uint64_t repeat, uint64_t zero) {
+bool perform_measurements(long max_size, float factor, long repeat, uint64_t zero) {
     uint64_t current_size = INITIAL_SIZE;
     while (current_size <= max_size) {
         array_element_t* arr = (array_element_t*)malloc(current_size);
@@ -160,7 +160,7 @@ int main(int argc, char* argv[])
     try {
         const long max_size = std::stol(argv[ARG_MAX_SIZE]);
         const float factor = std::stof(argv[ARG_FACTOR]);
-        const int repeat = std::stoi(argv[ARG_REPEAT]);
+        const long repeat = std::stol(argv[ARG_REPEAT]);
 
         if (max_size < MIN_MAX_SIZE || factor <= MIN_FACTOR || repeat < MIN_REPEAT) {
             std::cerr << "Error: Invalid input arguments." << std::endl << "Provided max_size = " << max_size
