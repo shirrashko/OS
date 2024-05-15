@@ -149,12 +149,12 @@ int main(int argc, char* argv[])
 
     // Your code here
     if (argc < NUMBER_OF_ARGS) {
-        std::cerr << "Usage: " << argv[ARG_PROGRAM_NAME] << " max_size factor repeat\n"
+        std::cerr << "Usage: " << argv[ARG_PROGRAM_NAME] << " max_size factor repeat" << std::endl
                   << "  max_size: Maximum size of the memory array in bytes (integer >= " << MIN_MAX_SIZE << ")" <<
                   std::endl << "  factor: Growth factor for memory sizes, must be > " << MIN_FACTOR << " (decimal)"
                   << std::endl << "  repeat: Number of times to repeat each measurement (integer >= " <<
                   MIN_REPEAT << ")" << std::endl;
-        return EXIT_FAILURE;
+        return -1;
     }
 
     try {
@@ -166,19 +166,19 @@ int main(int argc, char* argv[])
             std::cerr << "Error: Invalid input arguments." << std::endl << "Provided max_size = " << max_size
                       << ", factor = " << factor << ", repeat = " << repeat << std::endl << "Conditions: max_size >= 100, factor "
                                                                                             "> 1, repeat > 0." << std::endl;
-            return EXIT_FAILURE;
+            return -1;
         }
 
         if (!perform_measurements(max_size, factor, repeat, zero)) {
             std::cerr << "Failed to perform measurements dur to memory allocation failure." << std::endl;
-            return EXIT_FAILURE;
+            return -1;
         }
     } catch (const std::invalid_argument& e) {
         std::cerr << "Invalid argument: " << e.what() << std::endl;
-        return EXIT_FAILURE;
+        return -1;
     } catch (const std::out_of_range& e) {
         std::cerr << "Out of range: " << e.what() << std::endl;
-        return EXIT_FAILURE;
+        return -1;
     }
 
     return EXIT_SUCCESS;

@@ -29,7 +29,7 @@ plt.xscale('log')
 plt.axvline(x=l1_size, label=f"L1 ({l1_size/1024} KiB)", color='red', linestyle=':')
 plt.axvline(x=l2_size, label=f"L2 ({l2_size/1024/1024} MiB)", color='green', linestyle=':')
 plt.axvline(x=l3_size, label=f"L3 ({l3_size/1024/1024} MiB)", color='brown', linestyle=':')
-plt.axvline(x=page_table_eviction_threshold, label=f"Page Table Eviction Threshold ({page_table_eviction_threshold/1024/1024:.2f} MiB)", color='blue', linestyle='--')
+plt.axvline(x=page_table_eviction_threshold, label=f"Page Table Eviction Threshold ({page_table_eviction_threshold/1024/1024:.2f} MiB)", color='purple', linestyle='--')
 
 # Adding a legend
 plt.legend()
