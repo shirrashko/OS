@@ -177,7 +177,6 @@ int main(int argc, char* argv[])
                       << ", factor = " << factor
                       << ", repeat = " << repeat << std::endl;
             return -1;
-            return -1;
         }
 
         if (!perform_measurements(max_size, factor, repeat, zero)) {
