@@ -21,6 +21,19 @@
 #define ARG_FACTOR 2
 #define ARG_REPEAT 3
 
+const std::string USAGE_MESSAGE =
+        "Usage: ./memory_latency max_size factor repeat\n"
+        "  max_size: Maximum size of the memory array in bytes (integer >= " + std::to_string(MIN_MAX_SIZE) + ")\n"
+        "  factor: Growth factor for memory sizes, must be > " + std::to_string(MIN_FACTOR) + " (decimal)\n"
+                                                                                                                                                                                                    "  repeat: Number of times to repeat each measurement (integer >= " + std::to_string(MIN_REPEAT) + ")\n";
+const std::string INVALID_INPUT_ERROR =
+        "Error: Invalid input arguments.\n"
+        "Conditions: max_size >= " + std::to_string(MIN_MAX_SIZE) + ", factor > " + std::to_string(MIN_FACTOR)
+        + ", repeat >= " + std::to_string(MIN_REPEAT) + ".\n";
+
+const std::string MEMORY_ALLOCATION_ERROR = "Memory allocation failed for size "; // Append the size in bytes.
+const std::string MEASUREMENT_FAILURE_ERROR = "Failed to perform measurements due to memory allocation failure.";
+
 
 /**
  * Converts the struct timespec to time in nano-seconds. Convert the seconds to nanoseconds and add the nanoseconds part.
@@ -106,7 +119,7 @@ bool perform_measurements(uint64_t max_size, float factor, uint64_t repeat, uint
     while (current_size <= max_size) {
         array_element_t* arr = (array_element_t*)malloc(current_size);
         if (arr == nullptr) {
-            std::cerr << "Memory allocation failed for size " << current_size << " bytes." << std::endl;
+            std::cerr << MEMORY_ALLOCATION_ERROR << current_size << " bytes." << std::endl;
             return false;
         }
 
@@ -149,11 +162,7 @@ int main(int argc, char* argv[])
 
     // Your code here
     if (argc < NUMBER_OF_ARGS) {
-        std::cerr << "Usage: " << argv[ARG_PROGRAM_NAME] << " max_size factor repeat" << std::endl
-                  << "  max_size: Maximum size of the memory array in bytes (integer >= " << MIN_MAX_SIZE << ")" <<
-                  std::endl << "  factor: Growth factor for memory sizes, must be > " << MIN_FACTOR << " (decimal)"
-                  << std::endl << "  repeat: Number of times to repeat each measurement (integer >= " <<
-                  MIN_REPEAT << ")" << std::endl;
+        std::cerr << USAGE_MESSAGE << std::endl;
         return -1;
     }
 
@@ -163,14 +172,16 @@ int main(int argc, char* argv[])
         const uint64_t repeat = std::stoull(argv[ARG_REPEAT]);
 
         if (max_size < MIN_MAX_SIZE || factor <= MIN_FACTOR || repeat < MIN_REPEAT) {
-            std::cerr << "Error: Invalid input arguments." << std::endl << "Provided max_size = " << max_size
-                      << ", factor = " << factor << ", repeat = " << repeat << std::endl << "Conditions: max_size >= 100, factor "
-                                                                                            "> 1, repeat > 0." << std::endl;
+            std::cerr << INVALID_INPUT_ERROR
+                      << "Provided max_size = " << max_size
+                      << ", factor = " << factor
+                      << ", repeat = " << repeat << std::endl;
+            return -1;
             return -1;
         }
 
         if (!perform_measurements(max_size, factor, repeat, zero)) {
-            std::cerr << "Failed to perform measurements dur to memory allocation failure." << std::endl;
+            std::cerr << MEASUREMENT_FAILURE_ERROR << std::endl;
             return -1;
         }
     } catch (const std::invalid_argument& e) {
