@@ -21,6 +21,8 @@
 #define ARG_FACTOR 2
 #define ARG_REPEAT 3
 
+#define NANOS_PER_SECOND 1000000000ull
+
 const std::string USAGE_MESSAGE =
         "Usage: ./memory_latency max_size factor repeat\n"
         "  max_size: Maximum size of the memory array in bytes (integer >= " + std::to_string(MIN_MAX_SIZE) + ")\n"
@@ -45,7 +47,7 @@ const std::string MEASUREMENT_FAILURE_ERROR = "Failed to perform measurements du
  */
 uint64_t nanosectime(struct timespec t)
 {
-    return t.tv_sec * 1000000000ull + t.tv_nsec;
+    return t.tv_sec * NANOS_PER_SECOND + t.tv_nsec;
 }
 
 /**
@@ -72,10 +74,10 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
     // Baseline measurement: perform pseudo-random calculations without accessing the array
     for (register uint64_t i = 0; i < repeat; i++)
     {
-        register uint64_t index = i % arr_size;
+        register uint64_t index = rnd % arr_size; // Calculate a random index in the array
         rnd ^= index & zero; // XOR operation with zero doesn't change anything. This operation is done with zero,
         // which the compiler is unaware of the fact it is zero, to prevent the compiler from optimizing it out.
-        rnd = (rnd >> 1) ^ ((0-(rnd & 1)) & GALOIS_POLYNOMIAL);  // Advance rnd pseudo-randomly (using Galois LFSR)
+        rnd += 1;
     }
     struct timespec t1;
     timespec_get(&t1, TIME_UTC); // Get the time after the baseline measurement
@@ -86,9 +88,9 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
     rnd=(rnd & zero) ^ 12345; // Reset rnd for memory access measurement to 12345
     for (register uint64_t i = 0; i < repeat; i++)
     {
-        register uint64_t index = i % arr_size;
+        register uint64_t index = rnd % arr_size;
         rnd ^= arr[index] & zero; // This time access the array as well
-        rnd = (rnd >> 1) ^ ((0-(rnd & 1)) & GALOIS_POLYNOMIAL);  // Advance rnd pseudo-randomly (using Galois LFSR)
+        rnd += 1;
     }
     struct timespec t3;
     timespec_get(&t3, TIME_UTC); // Get the time after the memory access measurement
@@ -124,6 +126,11 @@ bool perform_measurements(uint64_t max_size, float factor, uint64_t repeat, uint
         }
 
         uint64_t number_of_elements = current_size / sizeof(array_element_t);
+        // Initialize the array with non-zero, distinct values
+        for (uint64_t i = 0; i < number_of_elements; ++i) {
+            arr[i] = i + 1; // Example initialization with unique values
+        }
+
         measurement random_measure = measure_latency(repeat, arr, number_of_elements, zero);
         measurement sequential_measure = measure_sequential_latency(repeat, arr, number_of_elements, zero);
 
@@ -157,7 +164,7 @@ int main(int argc, char* argv[])
     struct timespec t_dummy;
     timespec_get(&t_dummy, TIME_UTC);
     // Creating a zero variable that the compiler doesn't "know" it in compilation time.
-    const uint64_t zero = nanosectime(t_dummy)>1000000000ull?0:nanosectime(t_dummy);
+    const uint64_t zero = nanosectime(t_dummy)>NANOS_PER_SECOND?0:nanosectime(t_dummy);
 
 
     // Your code here
