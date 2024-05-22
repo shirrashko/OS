@@ -26,7 +26,7 @@
 const std::string USAGE_MESSAGE =
         "Usage: ./memory_latency max_size factor repeat\n"
         "  max_size: Maximum size of the memory array in bytes (integer >= " + std::to_string(MIN_MAX_SIZE) + ")\n"
-        "  factor: Growth factor for memory sizes, must be > " + std::to_string(MIN_FACTOR) + " (decimal)\n"
+                                                                                                              "  factor: Growth factor for memory sizes, must be > " + std::to_string(MIN_FACTOR) + " (decimal)\n"
                                                                                                                                                                                                     "  repeat: Number of times to repeat each measurement (integer >= " + std::to_string(MIN_REPEAT) + ")\n";
 const std::string INVALID_INPUT_ERROR =
         "Error: Invalid input arguments.\n"
@@ -77,7 +77,7 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
         register uint64_t index = rnd % arr_size; // Calculate a random index in the array
         rnd ^= index & zero; // XOR operation with zero doesn't change anything. This operation is done with zero,
         // which the compiler is unaware of the fact it is zero, to prevent the compiler from optimizing it out.
-        rnd += 1;
+        rnd++;
     }
     struct timespec t1;
     timespec_get(&t1, TIME_UTC); // Get the time after the baseline measurement
@@ -90,7 +90,7 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
     {
         register uint64_t index = rnd % arr_size;
         rnd ^= arr[index] & zero; // This time access the array as well
-        rnd += 1;
+        rnd++;
     }
     struct timespec t3;
     timespec_get(&t3, TIME_UTC); // Get the time after the memory access measurement
@@ -126,9 +126,10 @@ bool perform_measurements(uint64_t max_size, float factor, uint64_t repeat, uint
         }
 
         uint64_t number_of_elements = current_size / sizeof(array_element_t);
+
         // Initialize the array with non-zero, distinct values
         for (uint64_t i = 0; i < number_of_elements; ++i) {
-            arr[i] = i + 1; // Example initialization with unique values
+            arr[i] = i + 1;
         }
 
         measurement random_measure = measure_latency(repeat, arr, number_of_elements, zero);
@@ -166,8 +167,6 @@ int main(int argc, char* argv[])
     // Creating a zero variable that the compiler doesn't "know" it in compilation time.
     const uint64_t zero = nanosectime(t_dummy)>NANOS_PER_SECOND?0:nanosectime(t_dummy);
 
-
-    // Your code here
     if (argc < NUMBER_OF_ARGS) {
         std::cerr << USAGE_MESSAGE << std::endl;
         return -1;
