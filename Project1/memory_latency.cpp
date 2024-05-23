@@ -16,7 +16,6 @@
 #define MIN_REPEAT 1     // Minimum valid value for repeat times
 
 #define NUMBER_OF_ARGS 4
-#define ARG_PROGRAM_NAME 0
 #define ARG_MAX_SIZE 1
 #define ARG_FACTOR 2
 #define ARG_REPEAT 3
@@ -26,8 +25,8 @@
 const std::string USAGE_MESSAGE =
         "Usage: ./memory_latency max_size factor repeat\n"
         "  max_size: Maximum size of the memory array in bytes (integer >= " + std::to_string(MIN_MAX_SIZE) + ")\n"
-                                                                                                              "  factor: Growth factor for memory sizes, must be > " + std::to_string(MIN_FACTOR) + " (decimal)\n"
-                                                                                                                                                                                                    "  repeat: Number of times to repeat each measurement (integer >= " + std::to_string(MIN_REPEAT) + ")\n";
+        "  factor: Growth factor for memory sizes, must be > " + std::to_string(MIN_FACTOR) + " (decimal)\n"
+        "  repeat: Number of times to repeat each measurement (integer >= " + std::to_string(MIN_REPEAT) + ")\n";
 const std::string INVALID_INPUT_ERROR =
         "Error: Invalid input arguments.\n"
         "Conditions: max_size >= " + std::to_string(MIN_MAX_SIZE) + ", factor > " + std::to_string(MIN_FACTOR)
@@ -77,7 +76,7 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
         register uint64_t index = rnd % arr_size; // Calculate a random index in the array
         rnd ^= index & zero; // XOR operation with zero doesn't change anything. This operation is done with zero,
         // which the compiler is unaware of the fact it is zero, to prevent the compiler from optimizing it out.
-        rnd++;
+        rnd += 1;
     }
     struct timespec t1;
     timespec_get(&t1, TIME_UTC); // Get the time after the baseline measurement
@@ -90,7 +89,7 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
     {
         register uint64_t index = rnd % arr_size;
         rnd ^= arr[index] & zero; // This time access the array as well
-        rnd++;
+        rnd += 1;
     }
     struct timespec t3;
     timespec_get(&t3, TIME_UTC); // Get the time after the memory access measurement
@@ -117,9 +116,10 @@ struct measurement measure_sequential_latency(uint64_t repeat, array_element_t* 
  * @return true if the measurements were successful, false otherwise.
  */
 bool perform_measurements(uint64_t max_size, float factor, uint64_t repeat, uint64_t zero) {
+    array_element_t* arr;
     uint64_t current_size = INITIAL_SIZE;
     while (current_size <= max_size) {
-        array_element_t* arr = (array_element_t*)malloc(current_size);
+        arr = (array_element_t*)malloc(current_size);
         if (arr == nullptr) {
             std::cerr << MEMORY_ALLOCATION_ERROR << current_size << " bytes." << std::endl;
             return false;
@@ -139,6 +139,7 @@ bool perform_measurements(uint64_t max_size, float factor, uint64_t repeat, uint
         double offset_sequential = sequential_measure.access_time - sequential_measure.baseline;
 
         std::cout << current_size << "," << offset_random << "," << offset_sequential << std::endl;
+
         free(arr);
         current_size = (uint64_t)(ceil(current_size * factor));
     }

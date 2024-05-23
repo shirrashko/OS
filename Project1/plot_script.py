@@ -25,6 +25,7 @@ plt.plot(data[:, 0], data[:, 2], label="Sequential access")
 
 # Setting the scale to logarithmic for x axe
 plt.xscale('log')
+plt.yscale('log')
 
 # Adding vertical lines for cache sizes and the eviction threshold
 plt.axvline(x=l1_size, label=f"L1 ({int(l1_size/1024)} KiB per core)", color='red')
@@ -38,7 +39,7 @@ plt.legend()
 # Adding titles and labels
 plt.title("Memory Latency as a Function of Array Size \n"
           "on Intel(R) Core(TM) i5-8500 CPU @ 3.00GHz")
-plt.ylabel("Latency (ns)")
+plt.ylabel("Latency (ns, log scale)")
 plt.xlabel("Array Size (bytes, log scale)")
 
 # Displaying the plot
